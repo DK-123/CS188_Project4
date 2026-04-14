@@ -174,7 +174,7 @@ def eliminateWithCallTracking(callTrackingList=None):
         "*** YOUR CODE HERE ***"
         unconditioned = set(factor.unconditionedVariables())
         conditioned = set(factor.conditionedVariables())
-        unconditioned.pop(eliminationVariable)
+        unconditioned.remove(eliminationVariable)
         new = Factor(unconditioned, conditioned, factor.variableDomainsDict())
         
 
