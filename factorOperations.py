@@ -179,10 +179,9 @@ def eliminateWithCallTracking(callTrackingList=None):
         
 
         for assignment in new.getAllPossibleAssignmentDicts():
-
             total = 0.0
 
-            for value in factor.variableDomainsDict[eliminationVariable]:
+            for value in factor.variableDomainsDict()[eliminationVariable]:
                 extended = assignment.copy()
                 extended[eliminationVariable] = value
 
@@ -192,21 +191,7 @@ def eliminateWithCallTracking(callTrackingList=None):
 
         return new
     
-    #     for factor in new.variableDomainsDict():
-    #         probability = 1.0
-    #         for
-
-
-    #     for value in variableDomainsDict[eliminationVariable]:
-    #         extended = assignment.copy()
-    #         extended[eliminationVariable] = value
-
-    #         total += factor.getProbability(extended)
-
-    #     newFactor.setProbability(assignment, total)
-
-    # return newFactor
-            
+                
         raiseNotDefined()
         "*** END YOUR CODE HERE ***"
 
