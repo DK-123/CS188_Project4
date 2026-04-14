@@ -182,7 +182,7 @@ def eliminateWithCallTracking(callTrackingList=None):
 
             total = 0.0
 
-            for value in variableDomainsDict[eliminationVariable]:
+            for value in factor.variableDomainsDict[eliminationVariable]:
                 extended = assignment.copy()
                 extended[eliminationVariable] = value
 
