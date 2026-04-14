@@ -44,7 +44,7 @@ def constructBayesNet(gameState: hunters.GameState):
         - each agent position is a tuple (x, y) where x and y are 0-indexed
         - each observed distance is a noisy Manhattan distance:
           it's non-negative and |obs - true| <= MAX_NOISE
-    - this uses slightly simplified mechanics vs the ones used later for simplicity
+    - this uses slightly simplified mechanics vs the ones used later for simplicity 
     """
     # constants to use
     PAC = "Pacman"
@@ -61,7 +61,19 @@ def constructBayesNet(gameState: hunters.GameState):
     variableDomainsDict = {}
 
     "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    #raiseNotDefined()
+    variables = [PAC, GHOST0, GHOST1, OBS0, OBS1]
+    edges = [(PAC, OBS0), (PAC, OBS1), (GHOST0, OBS0), (GHOST1, OBS1)]
+ 
+    allPositions = []
+    for x in range(X_RANGE):
+        for y in range(Y_RANGE):
+            allPositions.append((x, y))
+ 
+    maxDistance = (X_RANGE - 1) + (Y_RANGE - 1)
+    obsValues = list(range(maxDistance + MAX_NOISE + 1))
+ 
+    variableDomainsDict = {PAC:allPositions, GHOST0:allPositions, GHOST1:allPositions, OBS0:obsValues, OBS1:obsValues}
     "*** END YOUR CODE HERE ***"
 
     net = bn.constructEmptyBayesNet(variables, edges, variableDomainsDict)
@@ -182,7 +194,22 @@ def inferenceByVariableEliminationWithCallTracking(callTrackingList=None):
             eliminationOrder = sorted(list(eliminationVariables))
 
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+        # raiseNotDefined()
+        
+        evidenceVariablesSet = set(evidenceDict.keys())
+        queryVariablesSet = set(queryVariables)
+ 
+        currentFactorsList = bayesNet.getAllCPTsWithEvidence(evidenceDict)
+ 
+        for eliminationVariable in eliminationOrder:
+            currentFactorsList, joinedFactor = joinFactorsByVariable(currentFactorsList, eliminationVariable)
+ 
+            if len(joinedFactor.unconditionedVariables()) > 1:
+                currentFactorsList.append(eliminate(joinedFactor, eliminationVariable))
+            # else 
+ 
+        fullJoint = joinFactors(currentFactorsList)
+        return normalize(fullJoint)
         "*** END YOUR CODE HERE ***"
 
 
