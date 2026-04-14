@@ -37,7 +37,7 @@ def joinFactorsByVariableWithCallTracking(callTrackingList=None):
         if not (callTrackingList is None):
             callTrackingList.append(('join', joinVariable))
 
-        currentFactorsToJoin =    [factor for factor in factors if joinVariable in factor.variablesSet()]
+        currentFactorsToJoin = [factor for factor in factors if joinVariable in factor.variablesSet()]
         currentFactorsNotToJoin = [factor for factor in factors if joinVariable not in factor.variablesSet()]
 
         # typecheck portion
@@ -102,6 +102,25 @@ def joinFactors(factors: List[Factor]):
 
 
     "*** YOUR CODE HERE ***"
+    unconditioned = set()
+    conditioned = set()
+    
+    for factor in factors:
+        unconditioned.update(set(factor.unconditionedVariables()))
+        conditioned.update(set(factor.conditionedVariables()))
+        dict = factor.variableDomainsDict()
+    conditioned = conditioned - unconditioned
+
+    new = Factor(unconditioned, conditioned, dict)
+
+    for assignment in new.getAllPossibleAssignmentDicts():
+        probability = 1.0
+        for factor in factors:
+            probability*= factor.getProbability(assignment)
+        new.setProbability(assignment,probability)
+    return new
+
+    
     raiseNotDefined()
     "*** END YOUR CODE HERE ***"
 
