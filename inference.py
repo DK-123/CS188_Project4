@@ -195,21 +195,30 @@ def inferenceByVariableEliminationWithCallTracking(callTrackingList=None):
 
         "*** YOUR CODE HERE ***"
         # raiseNotDefined()
+        # joinFactorsByVariable returns 2 things:
+        # 1) the factors that did not mention this variable aka left alone
+        # 2) the factors that did mention this variable joined into one
         
-        evidenceVariablesSet = set(evidenceDict.keys())
-        queryVariablesSet = set(queryVariables)
- 
         currentFactorsList = bayesNet.getAllCPTsWithEvidence(evidenceDict)
- 
+
         for eliminationVariable in eliminationOrder:
-            currentFactorsList, joinedFactor = joinFactorsByVariable(currentFactorsList, eliminationVariable)
- 
-            if len(joinedFactor.unconditionedVariables()) > 1:
-                currentFactorsList.append(eliminate(joinedFactor, eliminationVariable))
-            # else 
- 
+            result = joinFactorsByVariable(currentFactorsList, eliminationVariable)
+            currentFactorsNotJoined = result[0]
+            joinedFactor = result[1]
+            freeVars = joinedFactor.unconditionedVariables()
+            numUnconditioned = len(freeVars)
+
+            if numUnconditioned > 1:
+                eliminatedFactor = eliminate(joinedFactor, eliminationVariable)
+                currentFactorsNotJoined.append(eliminatedFactor)
+            
+            currentFactorsList = currentFactorsNotJoined
+
+    
         fullJoint = joinFactors(currentFactorsList)
-        return normalize(fullJoint)
+        normalizedResult = normalize(fullJoint)
+
+        return normalizedResult
         "*** END YOUR CODE HERE ***"
 
 
