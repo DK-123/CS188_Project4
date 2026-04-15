@@ -155,15 +155,16 @@ class GreedyBustersAgent(BustersAgent):
 
         closestGhost = None
         minDist = float('inf')
-
+        bestAction = None
+        bestDist = float('inf')
+        
         for pos in ghostPositions:
             d = self.distancer.getDistance(pacmanPosition, pos)
             if d < minDist:
                 minDist = d
                 closestGhost = pos
 
-        bestAction = None
-        bestDist = float('inf')
+        
 
         for action in legal:
             successorPosition = Actions.getSuccessor(pacmanPosition, action)
@@ -174,5 +175,4 @@ class GreedyBustersAgent(BustersAgent):
                 bestAction = action
 
         return bestAction
-
         "*** END YOUR CODE HERE ***"
