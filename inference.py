@@ -671,8 +671,8 @@ class ParticleFilter(InferenceModule):
         """
         "*** YOUR CODE HERE ***"
         dist = DiscreteDistribution()
-        for p in self.particles:
-            dist[p] += 1.0
+        for particle in self.particles:
+            dist[particle] += 1.0
 
         dist.normalize()
         return dist
